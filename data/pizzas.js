@@ -17,10 +17,12 @@ function batchImport (name, toppings, imgUrl, username) {
 }
 
 async function getForUser (username) {
-  const userPizzas = filter(pizzas, pizza =>
-    pizza.username === username
-  )
-  return userPizzas
+  return PizzaStore.findAll({
+    where: {
+      username
+    },
+    raw: true
+  }).then(debriefPizza)
 }
 
 async function getRecent () {
