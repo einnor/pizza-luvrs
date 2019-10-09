@@ -36,3 +36,28 @@ async function getAllItems (table) {
     })
   })
 }
+
+async function getItem (table, idKey, id) {
+  return new Promise((resolve, reject) => {
+    const params = {
+      TableName: table,
+      Key: {
+        [idKey]: id
+      }
+    }
+
+    dynamoDb.get(params, (err, data) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(data.Item)
+      }
+    })
+  })
+}
+
+module.exports = {
+  putItem,
+  getAllItems,
+  getItem
+}
