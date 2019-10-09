@@ -26,8 +26,11 @@ async function getForUser (username) {
 }
 
 async function getRecent () {
-  const recentPizzas = orderBy(pizzas, ['created'], ['desc'])
-  return values(recentPizzas).splice(0, 5)
+  return PizzaStore.findAll({
+    order: ['created', 'desc'],
+    limit: 4,
+    raw: true
+  }).then(debriefPizza)
 }
 
 async function get (pizzaId) {
