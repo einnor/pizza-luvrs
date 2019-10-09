@@ -13,7 +13,7 @@ async function create (username, passwordString) {
 }
 
 async function get (username) {
-  return users[username]
+  return DynamoStore.getItem('users', 'username', username)
 }
 
 async function authenticate (username, passwordString) {
