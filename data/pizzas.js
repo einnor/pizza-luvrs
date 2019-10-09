@@ -2,14 +2,12 @@ const { filter, orderBy, values } = require('lodash')
 
 const Pizza = require('../models/pizza')
 const ImageStore = require('../lib/imageStore')
-
-const pizzas = {}
+const PizzaStore = require('./pizzaStore')
 
 async function create (name, toppings, img, username) {
   const imgUrl = await ImageStore.save(name.replace(/ /g, '-'), img)
   const pizza = new Pizza(name, toppings, imgUrl, username)
-  pizzas[pizza.id] = pizza
-  return pizza
+  return PizzaStore.create(prepPizza(pizza))
 }
 
 // for mocks that don't need pizza images saved
@@ -33,6 +31,24 @@ async function getRecent () {
 async function get (pizzaId) {
   if (!pizzas[pizzaId]) throw new Error('Pizza not found')
   return pizzas[pizzaId]
+}
+
+function prepPizza (pizza) {
+  return {
+    ...pizza,
+    toppings: JSON.stringify(pizza.toppings)
+  }
+}
+
+function debriefPizza (pizza) {
+  return {
+    ...pizza,
+    toppings: JSON.parse(pizza.toppings)
+  }
+}
+
+function debriefPizzas (pizzas) {
+  return pizzas.map(debriefPizza)
 }
 
 module.exports = {
