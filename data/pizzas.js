@@ -13,7 +13,7 @@ async function create (name, toppings, img, username) {
 // for mocks that don't need pizza images saved
 function batchImport (name, toppings, imgUrl, username) {
   const pizza = new Pizza(name, toppings, imgUrl, username)
-  pizzas[pizza.id] = pizza
+  PizzaStore.create(prepPizza(pizza))
 }
 
 async function getForUser (username) {
