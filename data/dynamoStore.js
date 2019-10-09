@@ -20,3 +20,19 @@ async function putItem (table, item) {
     })
   })
 }
+
+async function getAllItems (table) {
+  return new Promise((resolve, reject) => {
+    const params = {
+      TableName: table
+    }
+
+    dynamoDb.scan(params, (err, data) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(data.Items)
+      }
+    })
+  })
+}
